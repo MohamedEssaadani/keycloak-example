@@ -1,10 +1,13 @@
 package com.essaadani.productskeycloak.web;
 
+import com.essaadani.productskeycloak.entities.Supplier;
 import com.essaadani.productskeycloak.repositories.ProductRepository;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,9 @@ public class ProductController{
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private KeycloakRestTemplate keycloakRestTemplate;
+
     @GetMapping("/")
     public String index(){
         return "index";
@@ -29,8 +35,9 @@ public class ProductController{
         return "products";
     }
     @GetMapping("/suppliers")
-    public String suppliers(){
-
+    public String suppliers(Model model){
+        PagedModel<Supplier> pageSuppliers = keycloakRestTemplate.getForObject("http://localhost:8083/suppliers", PagedModel.class);
+        model.addAttribute("suppliers", pageSuppliers);
         return "suppliers";
     }
 

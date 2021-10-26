@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import java.util.stream.Stream;
 
@@ -18,11 +19,13 @@ public class SuppliersKeycloakApplication {
 
 
     @Bean
-    CommandLineRunner lineRunner(SupplierRepository supplierRepository){
+    CommandLineRunner lineRunner(SupplierRepository supplierRepository,
+                                 RepositoryRestConfiguration repositoryRestConfiguration){
         return args -> {
             Stream.of("JBOSS","ORACLE","IBM").forEach(n->{
                 supplierRepository.save(new Supplier(null,n,n+"@"+n.toLowerCase()+".com"));
             });
+            repositoryRestConfiguration.exposeIdsFor(Supplier.class);
         };
     }
 }
