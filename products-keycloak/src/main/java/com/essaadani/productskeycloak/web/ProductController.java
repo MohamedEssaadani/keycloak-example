@@ -56,7 +56,7 @@ public class ProductController{
 
     @ExceptionHandler(Exception.class)
     public String exceptionHandler(Exception e,Model model){
-        model.addAttribute("errorMessage", e.getMessage());
+        model.addAttribute("errorMessage", "Probléme d'autorisation");
         return "errors";
     }
 }
