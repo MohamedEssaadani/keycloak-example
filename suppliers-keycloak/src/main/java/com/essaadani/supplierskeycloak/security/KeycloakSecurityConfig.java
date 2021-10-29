@@ -27,7 +27,7 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         super.configure(http);
         http.authorizeRequests()
                 .antMatchers("/suppliers/**")
-                .hasAuthority("ROLE_MANAGER");
+                .hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN");
     }
 
 
